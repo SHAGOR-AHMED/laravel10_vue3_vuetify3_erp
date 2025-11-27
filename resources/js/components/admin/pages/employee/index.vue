@@ -43,11 +43,12 @@
                 item-value="value"
                 label="Search By:"
                 dense
+                
               ></v-select>
             </v-col>
 
             <v-col cols="6" lg="3">
-                <v-text-field v-model="search" placeholder="Search Input..." dense></v-text-field>
+                <v-text-field v-model="search" placeholder="Search Input..." dense clearable></v-text-field>
             </v-col>
           </v-row>
 
@@ -253,11 +254,9 @@
                         :disabled="data.disabled"
                         @click:close="data.parent.selectItem(data.item)"
                       >
-                        <v-avatar
-                          class="accent white--text"
-                          left
-                          v-text="data.item.slice(0, 1).toUpperCase()"
-                        ></v-avatar>
+                        <v-avatar class="accent white--text" left>
+                          {{ data.item.slice(0, 1).toUpperCase() }}
+                        </v-avatar>
                         {{ data.item }}
                       </v-chip>
                     </template>
