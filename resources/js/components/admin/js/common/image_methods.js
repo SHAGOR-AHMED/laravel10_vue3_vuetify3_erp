@@ -40,24 +40,19 @@ export default{
     // image Upload by name
     uploadImageByName: function (event, currentFieldName) {
 
-        let file = event;
+        let file = event.target.files[0];
         let reader = new FileReader();
-        console.log('Image upload: ',file, file['size'] )
-        if (file['size'] < this.imageMaxSize) {
-            reader.onloadend = (file) => {
-                console.log('RESULT', reader.result)
-                this.form[currentFieldName] = reader.result;
-            }
-            reader.readAsDataURL(file);
-        } else {
-            alert('File size can not be bigger than 2 MB')
+        console.log('Image upload: ', file )
+        reader.onloadend = (event) => {
+            console.log('RESULT', event.target.result)
+            this.form[currentFieldName] = event.target.result;
         }
-
+        reader.readAsDataURL(file);
+       
     },
 
     // Selected Image Show
     showImageByName(currentFieldName) {
-
         if (this.form[currentFieldName]) {
             let photo = (this.form[currentFieldName].length > 100) ? this.form[currentFieldName] : this
                 .imagePathSm + this.form[currentFieldName];

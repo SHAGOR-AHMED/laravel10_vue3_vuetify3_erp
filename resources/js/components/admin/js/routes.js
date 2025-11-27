@@ -21,6 +21,7 @@ const routes = [
       title: 'Admin Dashboard',
     },
   },
+
   {
     path: '/admin/user',
     component: UserIndex,
@@ -29,6 +30,16 @@ const routes = [
       title: 'User Dashboard',
     },
   },
+
+  {
+    path: '/admin/employee',
+    component: EmployeeIndex,
+    name: 'EmployeeIndex',
+    meta:{
+      title: 'Employee Dashboard',
+    },
+  },
+
 ];
 
 const router = createRouter({

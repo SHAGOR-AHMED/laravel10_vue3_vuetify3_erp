@@ -8,6 +8,8 @@ import crudMethods from './crud'
 
 import imageMethods from './image_methods'
 
+import {debounce} from '../../../../helpers'
+
 export default {
     data() {
       return {
@@ -74,7 +76,14 @@ export default {
       },
 
       //Excuted When make change value 
-      search: function (value) {
+      search: debounce(function () {
+          this.$progress.start();
+          this.getResults();
+          this.$progress.finish();
+      }, 500),
+
+      //Excuted When make change value 
+      sex: function (value) {
           this.$progress.start();
           this.getResults();
           this.$progress.finish();

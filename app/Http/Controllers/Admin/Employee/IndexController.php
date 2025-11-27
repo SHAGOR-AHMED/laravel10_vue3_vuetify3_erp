@@ -73,12 +73,10 @@ class IndexController extends Controller
         $data->email         = $request->email;
         $data->mobile        = $request->mobile;
         $data->gender        = $request->gender;
-        $data->e_type        = $request->e_type;
+        $data->e_type          = $request->e_type;
         $data->others        = $request->others;
-        $data->e_skills      = implode(',', $request->e_skills);
+        $data->e_skills        = implode(',', $request->e_skills);
         $data->sports        = implode(',', $request->sports);
-        $data->created_time  = $request->created_time;
-        $data->created_date  = $request->created_date;
         $success             = $data->save();
 
         if($success){
@@ -123,8 +121,6 @@ class IndexController extends Controller
         $data->others         = $request->others;
         $data->e_skills       = implode(',', $request->e_skills);
         $data->sports         = implode(',', $request->sports);
-        $data->created_time   = $request->created_time;
-        $data->created_date   = $request->created_date;
         $success              = $data->save();
 
         if($success){

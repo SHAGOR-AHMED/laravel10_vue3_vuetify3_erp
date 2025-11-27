@@ -27,6 +27,7 @@
         >
             <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"  link router :to="{name: 'Dashboard'}" exact></v-list-item>
             <v-list-item prepend-icon="mdi-view-dashboard" title="User" value="User" link router :to="{name: 'UsersIndex'}"></v-list-item>
+            <v-list-item prepend-icon="mdi-account-details" title="Employee" value="Employee" link router :to="{name: 'EmployeeIndex'}"></v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>

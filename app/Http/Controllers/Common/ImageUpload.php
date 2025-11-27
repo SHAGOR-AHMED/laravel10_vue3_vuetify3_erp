@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Common;
-use Image;
+use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Str;
 
 trait ImageUpload {
@@ -30,10 +30,10 @@ trait ImageUpload {
         // Final Name
         $name = $randomName . time().'.' . explode('/', explode(':', substr($currentImage, 0, strpos($currentImage, ';')))[1])[1];
         // Original Image Save
-        \Image::make($currentImage)
+        \Image::read($currentImage)
         ->save($imagePath.$name);
         // Resized image save
-        \Image::make($currentImage)
+        \Image::read($currentImage)
         ->resize(300, 200)
         ->save($imagePathSm.$name);
 

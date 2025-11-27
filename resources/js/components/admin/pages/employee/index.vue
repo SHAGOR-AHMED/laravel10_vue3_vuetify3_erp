@@ -24,13 +24,26 @@
             </v-col>
 
             <v-col cols="6" lg="3">
-              <v-select v-model="sex" label="Gender:" :items="genders" item-text="text" item-value="value" dense>
-              </v-select>
+              <v-select
+                v-model="sex"
+                :items="genders"
+                item-title="text"
+                item-value="value"
+                label="Select"
+                dense
+            ></v-select>
+
             </v-col>
 
             <v-col cols="6" lg="3">
-              <v-select v-model="search_field" label="Search By:" :items="searchByFieldName" item-text="name" item-value="value" dense>
-              </v-select>
+              <v-select
+                v-model="search_field"
+                :items="searchByFieldName"
+                item-title="name"
+                item-value="value"
+                label="Search By:"
+                dense
+              ></v-select>
             </v-col>
 
             <v-col cols="6" lg="3">
@@ -93,6 +106,8 @@
                       >&darr;</span
                     >
                   </th>
+                  <th>Skills</th>
+                  <th>Image</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -101,6 +116,20 @@
                   <td>{{ singleData.id }}</td>
                   <td>{{ singleData.employee_name }}, {{ singleData.mobile }}</td>
                   <td>{{ singleData.email }}</td>
+                  <td>
+                    <span v-if="singleData.e_skills">
+                      <v-chip class="m-1"
+                        v-for="tag in singleData.e_skills.split(',')"
+                        :key="tag"
+                      >
+                        {{ tag }}
+                      </v-chip>
+                    </span>
+                  </td>
+                  <td>
+                    <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image"
+                        class="img-fluid m-1" height="50" width="80">
+                  </td>
                   <td class="text-center">
                     <v-btn v-if="singleData.status" @click="statusChange(singleData)" color="btn_active"
                         depressed small>
@@ -130,14 +159,11 @@
           <div>
             <span>Total Records: {{ totalValue }}</span>
           </div>
-          <pagination
-            :data="allData"
-            @pagination-change-page="getResults"
-            class="justify-content-end"
-          >
-            <span slot="prev-nav">&lt; Previous</span>
-            <span slot="next-nav">Next &gt;</span>
-          </pagination>
+          <Bootstrap5Pagination
+              :data="allData"
+              @pagination-change-page="getResults"
+              class="justify-content-end"
+          />
         </div>
 
         <div v-else>
@@ -197,17 +223,25 @@
                 </v-radio-group>
               </v-col>
 
-              <v-col cols="3" lg="3">
-                <v-select :items="employeeType" item-text="name" item-value="id" placeholder="Employment Type" :error-messages="form.errors.get('e_type')" label="Employment Type" v-model="form.e_type"></v-select>
+              <v-col cols="6" lg="6">
+                <v-select
+                  chips
+                  label="Employment Type"
+                  placeholder="Employment Type" 
+                  :items="['Permanent', 'Intern']"
+                  :error-messages="form.errors.get('e_type')"
+                  v-model="form.e_type"
+                ></v-select>
               </v-col>
 
-              <v-col cols="3" lg="3">
+              <v-col cols="6" lg="6">
                 <v-combobox
                     v-model="form.e_skills"
                     :items="items"
                     label="Skills"
                     placeholder="Select Skills"
                     multiple
+                    clearable
                     chips
                     :error-messages="form.errors.get('e_skills')"
                   >
@@ -230,56 +264,9 @@
                 </v-combobox>
               </v-col>
 
-              <v-col cols="3" lg="3">
-                <v-menu
-                  ref="abc"
-                  v-model="mytime"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  :return-value.sync="time"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="form.created_time"
-                      label="Time Picker"
-                      prepend-icon="mdi-clock-time-four-outline"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-time-picker
-                    v-if="mytime"
-                    v-model="form.created_time"
-                    full-width
-                    @click:minute="$refs.abc.save(time)"
-                  ></v-time-picker>
-                </v-menu>
-              </v-col>
-
-              <v-col cols="3">
-                  <v-menu v-model="menu" min-width="auto">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field v-model="form.created_date" label="Select Date" prepend-icon="mdi-calendar"
-                            readonly v-bind="attrs" v-on="on"></v-text-field>
-                    </template>
-                    <v-date-picker v-model="form.created_date" no-title scrollable>
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu = false">
-                            Cancel
-                        </v-btn>
-                    </v-date-picker>
-                </v-menu>
-              </v-col>
-
-              <v-col cols="12">
+              <v-col cols="12" lg="12">
                 <label>Sports:</label>
                 <v-row>
-                  <!-- {{ currentRoles }} -->
                   <v-col
                     class="pa-0"
                     cols="6"
@@ -300,12 +287,6 @@
               </v-col>
               <hr />
 
-              <!-- <v-row>
-                <v-col cols="12" lg="12">
-                  <v-checkbox v-model="form.sports" v-for="n in sports" :key="n.value" :label="n.text" :value="n.value" :error-messages="form.errors.get('sports')" multiple></v-checkbox>
-                </v-col>
-              </v-row> -->
-
               <v-row>
                 <v-col cols="12" lg="12">
                   <v-textarea  rows="2" v-model="form.others" label="Others (if any)" placeholder="Enter Employee Additional Info" :error-messages="form.errors.get('others')"></v-textarea>
@@ -314,15 +295,15 @@
 
               <v-row>
                   <!-- Image 1 -->
-                  <v-col md="4">
+                  <v-col cols="12" lg="12">
                       <v-file-input prepend-icon="mdi-camera" @change="uploadImageByName($event, 'image')"
-                          label="Choose 1st Image" size="sm" accept=".jpg, .png, .jpeg">
+                          label="Choose 1st Image" accept=".jpg, .png, .jpeg">
                       </v-file-input>
                   </v-col>
               </v-row>
 
               <v-row class="mb-2">
-                  <v-col md="4">
+                  <v-col cols="12" lg="12">
                       <img :src="showImageByName('image')"
                           class="rounded mx-auto d-block image-thum-size" />
                   </v-col>
@@ -369,14 +350,14 @@ export default {
       employeeRules: [v => !!v || 'This field is required!'],
 
       employeeType: [
-					{
-              name: 'Permanent',
-              id: 1
-          },
-          {
-              name: 'Intern',
-              id: 0
-          },
+        {
+            name: 'Permanent',
+            id: 1
+        },
+        {
+            name: 'Intern',
+            id: 0
+        },
       ],
 
       searchByFieldName:[
@@ -391,29 +372,29 @@ export default {
       ],
 
       genders: [
-					{
-              text: 'Male',
-              value: 1
-          },
-          {
-              text: 'Female',
-              value: 2
-          },
+        {
+            text: 'Male',
+            value: 1
+        },
+        {
+            text: 'Female',
+            value: 2
+        },
       ],
 
       sports: [
-					{
-              text: 'Cricket',
-              value: 'Cricket'
-          },
-          {
-              text: 'Football',
-              value: 'Football'
-          },
-          {
-              text: 'Chess',
-              value: 'Chess'
-          },
+        {
+            text: 'Cricket',
+            value: 'Cricket'
+        },
+        {
+            text: 'Football',
+            value: 'Football'
+        },
+        {
+            text: 'Chess',
+            value: 'Chess'
+        },
       ],
 
       items: [
@@ -429,14 +410,12 @@ export default {
         employee_name: "",
         email: "",
         mobile:"",
-        gender:"",
+        gender:null,
         e_type:"",
         e_skills:[],
         sports:[],
         image:"",
         others:"",
-        created_time:'',
-        created_date:'',
       }),
 
     };
@@ -468,10 +447,10 @@ export default {
   },
 
   mounted() {
-    this.$Progress.start();
+    this.$progress.start();
     // Fetch initial results
     this.getResults();
-    this.$Progress.finish();
+    this.$progress.finish();
   }
 };
 </script>
