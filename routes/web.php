@@ -36,6 +36,15 @@ Route::namespace('App\Http\Controllers')->group(function(){
             Route::post('/status/{id}',          'IndexController@status');
         });
 
+         //Role 
+        Route::namespace('Role')->prefix('role')->group(function(){
+            Route::get('/index',                'IndexController@index');
+            Route::post('/store',               'IndexController@store');
+            Route::put('/update',               'IndexController@update');
+            Route::delete('/destroy/{id}',      'IndexController@destroy');
+            Route::post('/delete-all',          'IndexController@deleteAll');
+        });
+
     });
 
     // User

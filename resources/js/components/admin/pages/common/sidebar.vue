@@ -26,8 +26,22 @@
         nav
         >
             <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"  link router :to="{name: 'Dashboard'}" exact></v-list-item>
-            <v-list-item prepend-icon="mdi-view-dashboard" title="User" value="User" link router :to="{name: 'UsersIndex'}"></v-list-item>
             <v-list-item prepend-icon="mdi-account-details" title="Employee" value="Employee" link router :to="{name: 'EmployeeIndex'}"></v-list-item>
+
+            <v-list-group value="Administrator">
+                <template v-slot:activator="{ props }">
+                    <v-list-item
+                        v-bind="props"
+                        prepend-icon="mdi-format-list-group"
+                        title="Administrator"
+                    ></v-list-item>
+                </template>
+
+                <v-list-item prepend-icon="mdi-account-circle" title="User" value="User" link router :to="{name: 'UsersIndex'}"></v-list-item>
+                <v-list-item prepend-icon="mdi-ab-testing" title="Role" value="Role" link router :to="{name: 'RoleIndex'}"></v-list-item>
+            </v-list-group>
+
+            <v-list-item prepend-icon="mdi-logout " title="Sign Out" value="Sign Out" link router href="/do-logout"></v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>

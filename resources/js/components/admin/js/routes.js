@@ -3,6 +3,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Dashboard from '../pages/dashboard.vue'
 import UserIndex from '../pages/user/index.vue'
 import EmployeeIndex from '../pages/employee/index.vue'
+import RoleIndex from '../pages/role/index.vue'
 
 const routes = [
   {
@@ -28,6 +29,15 @@ const routes = [
     name: 'UsersIndex',
     meta:{
       title: 'User Dashboard',
+    },
+  },
+
+  {
+    path: '/admin/role',
+    component: RoleIndex,
+    name: 'RoleIndex',
+    meta:{
+      title: 'Role Dashboard',
     },
   },
 
