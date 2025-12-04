@@ -10,6 +10,8 @@ import imageMethods from './image_methods'
 
 import {debounce} from '../../../../helpers'
 
+import globalRolePermissions from './../../../../role_permissions'
+
 export default {
     data() {
       return {
@@ -54,6 +56,9 @@ export default {
     },
 
     methods: {
+
+      // Global Permission Role check
+      ...globalRolePermissions,
         
       //Pagination Methods
       ...paginateMethods,
@@ -113,7 +118,8 @@ export default {
     computed : {
       // map the auth data
       ...mapGetters({
-          'auth'  : 'getAuth',
+          'auth'   : 'getAuth',
+          'roles'  : 'getRoles',
       }),
 
     },

@@ -22,13 +22,13 @@
         </template>
         <v-divider></v-divider>
         <v-list
-        density="compact"
-        nav
+            density="compact"
+            nav
         >
-            <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"  link router :to="{name: 'Dashboard'}" exact></v-list-item>
-            <v-list-item prepend-icon="mdi-account-details" title="Employee" value="Employee" link router :to="{name: 'EmployeeIndex'}"></v-list-item>
+            <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="Home"  link router :to="{name: 'Dashboard'}" exact></v-list-item>
+            <v-list-item v-if="isEmployee()" prepend-icon="mdi-account-details" title="Employee" value="Employee" link router :to="{name: 'EmployeeIndex'}"></v-list-item>
 
-            <v-list-group value="Administrator">
+            <v-list-group value="Administrator" v-if="isAdministrator()">
                 <template v-slot:activator="{ props }">
                     <v-list-item
                         v-bind="props"

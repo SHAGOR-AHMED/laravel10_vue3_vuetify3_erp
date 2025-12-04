@@ -9,6 +9,7 @@
               @click="addDataModal('Add New Employee')"
               class="btn_add float-right"
               small
+              v-if="isAddAccess()"
             >
               <v-icon left>mdi-plus-circle-outline</v-icon>Add New Employee
             </v-btn>
@@ -145,11 +146,17 @@
                       @click="editDataModel(singleData, 'Update User Info')"
                       small
                       class="ma-1 btn_edit"
+                      v-if="isEditAccess()"
                     >
                       <v-icon left>mdi-pencil-outline</v-icon>Edit
                     </v-btn>
 
-                    <v-btn @click="deleteData(singleData.id)" small class="ma-1 btn_delete">
+                    <v-btn 
+                      @click="deleteData(singleData.id)" 
+                      small 
+                      class="ma-1 btn_delete"
+                      v-if="isDeleteAccess()"
+                    >
                       <v-icon left>mdi-delete-empty-outline</v-icon>Delete
                     </v-btn>
                   </td>

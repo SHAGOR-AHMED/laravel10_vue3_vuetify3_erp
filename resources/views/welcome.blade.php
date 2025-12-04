@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="app">
-        <index-component authuser="{{ Auth::user() }}"></index-component>
+        <index-component authuser="{{ Auth::user() }}" permission="{{ $roles }}"></index-component>
     </div>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </body>

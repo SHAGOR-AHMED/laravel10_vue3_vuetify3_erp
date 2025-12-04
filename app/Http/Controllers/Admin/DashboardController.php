@@ -10,8 +10,7 @@ class DashboardController extends Controller
 {
 
     public function index(){
-
-        //$roles = Auth::user()->roles->pluck('name');
-        return view('welcome');
+        $roles = Auth::user()->roles->pluck('name');
+        return view('welcome', compact('roles'));
     }
 }

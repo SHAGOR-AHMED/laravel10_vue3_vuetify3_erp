@@ -17,7 +17,7 @@ import pageFooter from './pages/common/footer.vue'
 
 export default {
 
-    props: ['authuser'],
+    props: ['authuser', 'permission'],
     
     components:{
         'side-bar' : sideBar,
@@ -31,8 +31,11 @@ export default {
     created(){
        // Set Auth and Role data in Store
         this.$store.commit('setAuth', JSON.parse(this.authuser) )
+        this.$store.commit('setRoles', JSON.parse(this.permission) )
         this.$progress.start();
         //console.log('Auth User: ', JSON.parse(this.authuser))
+        //console.log('permission', JSON.parse(this.permission));
+        //console.log('Role: ', this.isAdministrator(), this.isAnyRole(['Administrator', 'Ivca']), this.isRole('Administrator') )
         this.$progress.finish();
     }
 }
