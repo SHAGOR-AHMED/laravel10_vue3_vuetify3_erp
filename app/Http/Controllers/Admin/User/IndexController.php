@@ -19,12 +19,10 @@ class IndexController extends Controller
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
 
-        $allData = User::orderBy($sort_field, $sort_direction)
+        $allData = User::with('roles')->orderBy($sort_field, $sort_direction)
                 ->search( trim(preg_replace('/\s+/', ' ', $search)) )
                 ->paginate($paginate);
-
         return response()->json($allData, 200);
-
     }
 
     // store
@@ -38,7 +36,7 @@ class IndexController extends Controller
             'password' => 'min:6|required_with:password_confirm|same:password_confirm'
         ]);
 
-        $data = new User();
+        $data                = new User();
         $data->name          = $request->name;
         $data->email         = $request->email;
         $data->phone         = $request->phone;
@@ -46,7 +44,7 @@ class IndexController extends Controller
         $success             = $data->save();
 
         // Role Sync 
-        //$data->roles()->sync($request->role_id);
+        $data->roles()->sync($request->role_id);
 
         if($success){
             return response()->json(['msg'=>'Save Successfully &#128513;', 'icon'=>'success'], 200);
@@ -73,7 +71,7 @@ class IndexController extends Controller
         $data->phone         = $request->phone;
 
         // Role Sync
-        //$data->roles()->sync($request->role_id);
+        $data->roles()->sync($request->role_id);
 
         $success             = $data->save();
 
@@ -119,7 +117,6 @@ class IndexController extends Controller
         }else{
             return response()->json(['msg' => 'Data not save in DB !!'], 422);
         }
-    
     }
 
 

@@ -83,6 +83,7 @@
                       >&darr;</span
                     >
                   </th>
+                  <th>Role</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -93,6 +94,19 @@
                   <td>{{ singleData.email }}<br>
                       {{ (singleData.phone) ?  singleData.phone : 'N/A' }}
                   </td>
+                  <td>
+                      <span v-if="singleData.roles.length">
+                      <span
+                        v-for="(item, index) in singleData.roles"
+                        :key="index"
+                      >
+                        <v-chip class="m-1 small">{{ item.name }}</v-chip>
+                      </span>
+                    </span>
+                    <span v-else>
+                      <span class="text-danger">Role Not Assigned</span>
+                    </span>
+                  </td>
                   <td class="text-center">
                     <v-btn v-if="singleData.status" @click="statusChange(singleData)" color="btn_active"
                         depressed small>
@@ -101,6 +115,14 @@
 
                     <v-btn v-else @click="statusChange(singleData)" color="btn_inactive" depressed small>
                         <v-icon small left>mdi-alert-circle-outline </v-icon> Inactive
+                    </v-btn>
+
+                    <v-btn
+                      @click="editRoleModel(singleData)"
+                      small
+                      class="ma-1 btn_role"
+                    >
+                      <v-icon left>mdi-camera-control</v-icon>Role
                     </v-btn>
 
                     <v-btn
@@ -184,6 +206,30 @@
                 <v-text-field v-model="form.password_confirm" label="Confirm Password" placeholder="Enter Confirm Password"
                 ></v-text-field>
               </v-col>
+
+              <hr />
+              <v-col cols="12">
+                <label>Assign Roles:</label>
+                <v-row>
+                  <!-- {{ currentRoles }} -->
+                  <v-col
+                    class="pa-0"
+                    cols="6"
+                    lg="3"
+                    v-for="(role, index) in allRoles"
+                    :key="index"
+                  >
+                    <v-checkbox
+                      v-model="form.role_id"
+                      :label="role.name"
+                      color="success"
+                      :value="role.id"
+                      hide-details
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <hr />
               
               <v-btn v-show="editmode" type="'submit" block class="my-2 btn_update" :loading="dataLodaing">
                 <v-icon left>mdi-pencil-outline</v-icon>Update
@@ -197,7 +243,62 @@
       </v-card>
     </v-dialog>
 
+    <!-- role model start -->
+    <v-dialog v-model="roleDataModal">
+      <v-card>
+        <v-card-title class="justify-center">
+          <v-row>
+            <v-col cols="10">Update Role</v-col>
+            <v-col cols="2">
+              <v-btn
+                @click="roleDataModal = false"
+                color="btn_close lighten-1 white--text"
+                small
+                class="float-right"
+              >
+                <v-icon left dark>mdi-close-octagon</v-icon>Close
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-title>
 
+        <v-card-text>
+          <form @submit.prevent="updateRoleData()">
+            <v-row>
+                <v-col cols="12">
+                  <label>Assign Roles:</label>
+                  <v-row>
+                    <!-- {{ currentRoles }} -->
+                    <v-col
+                      class="pa-0"
+                      cols="6"
+                      lg="3"
+                      v-for="(role, index) in allRoles"
+                      :key="index"
+                    >
+                      <v-checkbox
+                        v-model="form.role_id"
+                        :label="role.name"
+                        color="success"
+                        :value="role.id"
+                        hide-details
+                      ></v-checkbox>
+                    </v-col>
+                  </v-row>
+                </v-col>
+                <hr />
+                <v-btn
+                  type="submit"
+                  block
+                  class="my-2 btn_update"
+                  :loading="dataLodaing"
+                ><v-icon left>mdi-pencil-outline</v-icon>Update
+                </v-btn>
+            </v-row>
+          </form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
 
   </div>
 </template>
@@ -224,7 +325,10 @@ export default {
         email: "",
         phone: "",
         password:"",
+        role_id: [],
       }),
+
+      allRoles: [],
 
     };
   },
@@ -235,12 +339,80 @@ export default {
 
   methods:{
 
+    getRoles(){
+      axios.get(this.currentUrl + '/get-roles').then(response => {
+        this.allRoles = response.data.get_all_roles;
+      });
+    },
+
+    // Edit Data Modal
+    editDataModel(singleData, title = null) {
+      this.dataModal = true;
+      this.editmode = true;
+      this.dataModelTitle = title ? title : "Update Data";
+      this.resetForm();
+      this.form.fill(singleData);
+      // Role
+      this.form.role_id = [];
+      singleData.roles.forEach((element) => {
+        this.form.role_id.push(element.id);
+      });
+
+      console.log('role id = ', this.form.role_id);
+      console.log(this.form.role_id, singleData.roles);
+    
+    },
+
+    // Edit Dynamic Role Modal
+    editRoleModel(singleData) {
+      this.roleDataModal = true;
+      this.resetForm();
+      // this.form.fill(singleData);
+      this.form.id = singleData.id
+      // Role
+      this.form.role_id = [];
+      singleData.roles.forEach((element) => {
+        this.form.role_id.push(element.id);
+      });
+    },
+
+    //update role data with axios
+    updateRoleData() {
+        this.dataLodaing = true
+        this.$progress.start()
+        // request send and get response
+        axios.put(this.currentUrl + '/role-update', {data: this.form}).then(response => {
+            // Input field make empty
+            this.resetForm()
+            // modal hide
+            this.roleDataModal = false
+            this.dataLodaing = false
+
+            // Refresh Tbl Data with current page
+            this.getResults(this.currentPageNumber)
+            this.$progress.finish()
+
+            this.$swal.fire({
+                title: "Success",
+                text: response.data.msg,
+                icon: response.data.icon,
+            });
+           
+        }).catch(error=>{
+            // this.dataModal = false;
+            this.dataLodaing = false;
+            this.$swal.fire("Failed!", 'Data not saved', "warning");
+        });
+
+    },
+
   },
 
   mounted() {
     this.$progress.start();
     // Fetch initial results
     this.getResults();
+    this.getRoles();
     this.$progress.finish();
   }
 };

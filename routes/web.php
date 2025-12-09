@@ -19,16 +19,18 @@ Route::namespace('App\Http\Controllers')->group(function(){
         Route::get('{any?}', 'DashboardController@index');
 
         //Users
-        Route::namespace('User')->prefix('user')->group(function(){
+        Route::middleware('can:administration')->namespace('User')->prefix('user')->group(function(){
             Route::get('/index',                 'IndexController@index');
             Route::post('/store',                'IndexController@store');
             Route::put('/update',                'IndexController@update');
             Route::delete('/destroy/{id}',       'IndexController@destroy');
             Route::post('/status/{id}',          'IndexController@status');
+            Route::get('/get-roles',             'IndexController@getRoles');
+            Route::put('/role-update',           'IndexController@updateRole');
         });
 
         //Employee
-        Route::namespace('Employee')->prefix('employee')->group(function(){
+        Route::middleware('can:employee')->namespace('Employee')->prefix('employee')->group(function(){
             Route::get('/index',                 'IndexController@index');
             Route::post('/store',                'IndexController@store');
             Route::put('/update',                'IndexController@update');

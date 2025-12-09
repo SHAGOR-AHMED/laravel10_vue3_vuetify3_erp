@@ -12,7 +12,7 @@ export default {
             '&sex=' + this.sex
         )
         .then(response => {
-            console.log('result: ',response.data);
+            //console.log('result: ',response.data);
             this.allData = response.data;
             this.totalValue = response.data.total;
             this.dataShowFrom = response.data.from;
