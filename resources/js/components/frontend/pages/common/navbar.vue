@@ -1,12 +1,10 @@
 <template>
     <div>
-        <v-app-bar app flat dense dark class="nav-color">
-
-            <v-app-bar-nav-icon href="/">
-                <v-img src="/all-assets/common/logo/cpb/cpbgroup.png" alt="room" max-height="40" max-width="40" contain
-                    class="nav-logo-bg"></v-img>
+        <v-app-bar app flat dense dark class="nav-color footer_bg">
+            <v-app-bar-nav-icon router :to="{name: 'Dashboard'}">
+                <img src="/all-assets/common/logo/cpb/cpbgroup.png" alt="room" height="40" width="40" contain
+                    class="nav-logo-bg" />
             </v-app-bar-nav-icon>
-
             <v-spacer></v-spacer>
 
             <v-btn text small link router :to="{name: 'Dashboard'}" exact>
@@ -16,28 +14,6 @@
             <v-btn text small link router :to="{name: 'er404'}">
                 Error Page
             </v-btn>
-
-            <v-menu open-on-hover offset-y>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" text small>
-                        Dropdown
-                    </v-btn>
-                </template>
-                <v-list dense>
-                    <v-list-item router link>
-                        <v-list-item-title>Title</v-list-item-title>
-                    </v-list-item>
-
-                    <v-list-item router link>
-                        <v-list-item-title>Title</v-list-item-title>
-                    </v-list-item>
-
-                    <v-list-item router link>
-                        <v-list-item-title>Title</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-
         </v-app-bar>
     </div>
 </template>
@@ -62,5 +38,4 @@
     a:hover {
         text-decoration: none;
     }
-
 </style>

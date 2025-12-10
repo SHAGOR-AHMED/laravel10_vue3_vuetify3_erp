@@ -60,11 +60,14 @@
 								<div v-if="form.errors.has('password')" v-html="form.errors.get('password')" />
 	
 	
-								<v-btn block depressed class="light-blue darken-4 text-black"
-									type="submit">
-									<v-icon dense>
-										mdi-login
-									</v-icon>
+								<v-btn 
+									block 
+									depressed 
+									class="light-blue darken-4 text-black"
+									type="submit"
+									:loading="dataLodaing"
+								>
+									<v-icon dense>mdi-login</v-icon>
 									Login
 								</v-btn>
 	
@@ -109,8 +112,10 @@ export default {
 
     methods: {
         login_attempt: function(){
+			this.dataLodaing = true
             this.form.post('/login-check')
             .then(response =>{
+				this.dataLodaing = false
                 if(response.data.success == true){
                     window.location.href = "/admin/dashboard" //web.php route
                 }else{

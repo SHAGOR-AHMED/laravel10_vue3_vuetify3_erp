@@ -270,6 +270,36 @@
                 </v-combobox>
               </v-col>
 
+              
+                <v-row justify="space-around">
+                  <v-col cols="6" sm="6">
+                    <v-date-picker
+                      v-model="form.my_date"
+                      color="primary"
+                      elevation="24"
+                    ></v-date-picker>
+                  </v-col>
+
+                  <v-col cols="6" sm="6">
+                    <v-text-field
+                      :model-value="time"
+                      label="Time Picker"
+                      prepend-icon="mdi-clock-time-four-outline"
+                      readonly
+                      v-model="form.time"
+                    >
+                      <v-menu
+                        v-model="showMenu"
+                        :close-on-content-click="false"
+                        activator="parent"
+                        min-width="0"
+                      >
+                        <v-time-picker v-model="form.time"></v-time-picker>
+                      </v-menu>
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+
               <v-col cols="12" lg="12">
                 <label>Sports:</label>
                 <v-row>
@@ -295,7 +325,9 @@
 
               <v-row>
                 <v-col cols="12" lg="12">
-                  <v-textarea  rows="2" v-model="form.others" label="Others (if any)" placeholder="Enter Employee Additional Info" :error-messages="form.errors.get('others')"></v-textarea>
+                  <v-textarea  rows="2" v-model="form.others" label="Others (if any)" placeholder="Enter Employee Additional Info"></v-textarea>
+                  <!-- <vue3-editor v-model="form.others" /> -->
+                  <!-- <ckeditor :editor="editor" v-model="form.others" /> -->
                 </v-col>
               </v-row>
 
@@ -333,6 +365,7 @@
 <script>
 // vform
 import Form from "vform";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default {
   data() {
@@ -344,14 +377,27 @@ export default {
       imagePath: "/images/employee/",
       imageMaxSize: "2111775",
 
-      //date picker
-      show: '',
-      created_date:'',
-      menu: false,
+      editor: ClassicEditor,
 
-      //time picker
+      //time
       time: null,
-      mytime: false,
+      showMenu: false,
+
+      // Form
+      form: new Form({
+        id: "",
+        employee_name: "",
+        email: "",
+        mobile:"",
+        gender:null,
+        e_type:"",
+        e_skills:[],
+        sports:[],
+        image:"",
+        others:"",
+        time:'',
+        my_date:'',
+      }),
 
       employeeRules: [v => !!v || 'This field is required!'],
 
@@ -410,20 +456,6 @@ export default {
         'Vuetify',
       ],
 
-      // Form
-      form: new Form({
-        id: "",
-        employee_name: "",
-        email: "",
-        mobile:"",
-        gender:null,
-        e_type:"",
-        e_skills:[],
-        sports:[],
-        image:"",
-        others:"",
-      }),
-
     };
   },
 
@@ -466,5 +498,9 @@ export default {
       height: 50px;
       width: 100px;
   }
+
+/* Optional: Quill CSS */
+@import "quill/dist/quill.snow.css";
+
 
 </style>

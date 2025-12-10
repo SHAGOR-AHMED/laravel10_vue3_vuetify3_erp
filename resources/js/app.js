@@ -53,6 +53,13 @@ import { Bootstrap5Pagination } from 'laravel-vue-pagination';
 import Swal from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
+//ckeditor
+// import CKEditor from '@ckeditor/ckeditor5-vue';
+// import CKEditor from '@ckeditor/ckeditor5-vue/dist/ckeditor';
+
+//Vue3Editor
+import Vue3Editor from 'vue3-editor'
+
 const app = createApp({});
 app.component('data-not-available', DataNotAvailable);
 app.component('tbl-data-loader', TblDataLoader);
@@ -62,6 +69,8 @@ app.component('Bootstrap5Pagination', Bootstrap5Pagination);
 app.use(vuetify);
 app.use(router);
 app.use(store);
+// app.use(CKEditor);
+app.use(Vue3Editor);
 app.use(Swal);
 app.mixin(common);
 app.config.globalProperties.$form = Form

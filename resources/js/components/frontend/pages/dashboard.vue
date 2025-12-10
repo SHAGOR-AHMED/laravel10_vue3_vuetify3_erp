@@ -6,7 +6,6 @@
 
 <script>
     export default {
-      
         created(){
             console.log('I am demo dashboard')
         }

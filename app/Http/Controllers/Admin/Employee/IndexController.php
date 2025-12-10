@@ -48,7 +48,7 @@ class IndexController extends Controller
     // store
     public function store(Request $request){
 
-         //Validate
+        //Validate
         $this->validate($request,[
             'employee_name'   => 'required|string|max:100',
             'email'           => 'required|email',
@@ -73,9 +73,11 @@ class IndexController extends Controller
         $data->email         = $request->email;
         $data->mobile        = $request->mobile;
         $data->gender        = $request->gender;
-        $data->e_type          = $request->e_type;
+        $data->e_type        = $request->e_type;
         $data->others        = $request->others;
-        $data->e_skills        = implode(',', $request->e_skills);
+        $data->time          = $request->time;
+        $data->my_date       = date('d-m-Y', strtotime($request->my_date));
+        $data->e_skills      = implode(',', $request->e_skills);
         $data->sports        = implode(',', $request->sports);
         $success             = $data->save();
 
@@ -119,6 +121,8 @@ class IndexController extends Controller
         $data->gender         = $request->gender;
         $data->e_type         = $request->e_type;
         $data->others         = $request->others;
+        $data->time           = $request->time;
+        $data->my_date        = date('d-m-Y', strtotime($request->my_date));
         $data->e_skills       = implode(',', $request->e_skills);
         $data->sports         = implode(',', $request->sports);
         $success              = $data->save();

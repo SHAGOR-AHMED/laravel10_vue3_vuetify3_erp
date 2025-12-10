@@ -1,27 +1,31 @@
 
-require('./../../../bootstrap');
+import './../../../bootstrap';
 
-window.Vue = require('vue').default;
+import { createApp } from 'vue';
 
 // Router
 import router from './routes'
 
-// Vuex File
-//import store from './store';
+// Import Vuetify
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
 
-// mixin global added
-// import common from './common/mixin';
-// Vue.mixin(common);
+// (Optional) import Material Design Icons
+import '@mdi/font/css/materialdesignicons.css';
 
-// Vuetify
-import Vuetify from 'vuetify'
-Vue.use(Vuetify)
+// Create Vuetify instance
+const vuetify = createVuetify({
+  components,
+  directives,
+});
 
-Vue.component('frontend-index-component', require('./../index.vue').default);
+import IndexComponent from './../index.vue';
 
-const app = new Vue({
-  router,
-  vuetify: new Vuetify(),
-  
-}).$mount('#app')
+const app = createApp({});
+app.component('frontend-index-component', IndexComponent);
+app.use(vuetify);
+app.use(router);
+app.mount('#app');
 

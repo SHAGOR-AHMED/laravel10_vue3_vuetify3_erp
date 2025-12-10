@@ -52,7 +52,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     // User
     Route::namespace('Frontend')->group(function(){
 
-        Route::get('/frontend', 'IndexController@index');
+        Route::get('/frontend',  'IndexController@index');
         Route::get('{any?}', 'IndexController@index');
     });
 
@@ -60,4 +60,4 @@ Route::namespace('App\Http\Controllers')->group(function(){
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
