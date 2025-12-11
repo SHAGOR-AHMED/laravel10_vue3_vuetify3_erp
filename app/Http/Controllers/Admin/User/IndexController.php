@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin\User;
 
+use Carbon\Carbon;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Role;
-use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class IndexController extends Controller
 {
@@ -210,6 +211,33 @@ class IndexController extends Controller
     public function getRoles(){
         $roles = Role::all();
         return response()->json(['get_all_roles'=>$roles],200);
+    }
+
+     //for vue chart js
+    public function roleWiseUser(){
+
+        $roleWiseUsers = DB::table('roles')
+            ->join('user_roles','user_roles.role_id','=','roles.id')
+            ->select('roles.name',DB::raw('count(user_roles.id) as total'))
+            ->groupBy('roles.name')
+            ->get();
+
+        $labels = [];
+        $data = [];
+        
+        foreach($roleWiseUsers as $value){
+
+            $labels[] = $value->name ?? null;
+            $data[] = $value->total ?? null;
+        }
+
+        
+
+        $chart_data = ['labels' => $labels, 'data' => $data];
+
+        //dd($chart_data);
+        return response()->json(['chart_data'=>$chart_data],200);
+
     }
 
     

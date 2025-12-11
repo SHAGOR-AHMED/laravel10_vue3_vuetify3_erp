@@ -27,6 +27,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
             Route::post('/status/{id}',          'IndexController@status');
             Route::get('/get-roles',             'IndexController@getRoles');
             Route::put('/role-update',           'IndexController@updateRole');
+            Route::get('/roleWiseUser',          'IndexController@roleWiseUser');
         });
 
         //Employee
@@ -54,6 +55,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
 
         Route::get('/frontend',  'IndexController@index');
         Route::get('{any?}', 'IndexController@index');
+        
     });
 
 });
