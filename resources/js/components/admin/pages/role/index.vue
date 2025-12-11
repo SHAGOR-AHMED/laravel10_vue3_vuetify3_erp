@@ -52,6 +52,21 @@
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
+
+                <v-list-item>
+                  <v-btn @click="statusActiveAll(selected)" small class="ma-1 success"
+                        depressed>
+                    <v-icon left>mdi-check-circle-outline</v-icon>Active All
+                  </v-btn>
+                </v-list-item>
+
+                <v-list-item>
+                  <v-btn @click="statusDeactiveAll(selected)" small class="ma-1 warning"
+                        depressed>
+                    <v-icon left>mdi-alert-circle-outline</v-icon>Deactive All
+                  </v-btn>
+                </v-list-item>
+
               </v-list>
             </v-menu>
 
@@ -105,6 +120,16 @@
                   <td>{{ singleData.id }}</td>
                   <td>{{ singleData.name }}</td>
                   <td class="text-center" v-if="!singleData.used_role">
+
+                    <v-btn v-if="singleData.status" class="btn_active"
+                        depressed small>
+                        <v-icon small left>mdi-check-circle-outline</v-icon> Active
+                    </v-btn>
+
+                    <v-btn v-else class="btn_inactive" depressed small>
+                        <v-icon small left>mdi-alert-circle-outline </v-icon> Inactive
+                    </v-btn>
+
                     <v-btn
                       @click="editDataModel(singleData, 'Update Role Info')"
                       small
@@ -233,6 +258,17 @@ export default {
         this.isSelected = (selected.length > 0);
         this.selectedAll = (selected.length == this.allData.data.length);
     },
+
+    selectedAll: function () {
+        if(this.selectedAll == false){
+          this.selected = [];
+        }else{
+          this.allData.data.forEach(bulkrole =>{
+            this.selected.push(bulkrole.id);
+          });
+          this.isSelected = (this.selected.length > 0);
+        }
+    },
   },
 
   methods:{
@@ -282,6 +318,70 @@ export default {
       
     },
 
+    // Bulk Status Active
+    statusActiveAll(selected) {
+
+        this.$swal.fire({
+            title: 'Are you sure?',
+            text: 'Are you want to Active all?',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Active',
+        }).then((result) => {
+
+            // Send request to the server
+            if (result.value) {
+                axios.post(this.currentUrl + '/bulk-status-active', { data:selected }).then((response) => {
+                    this.selected = [];
+                    this.selectedAll = false;
+                    this.$swal.fire(
+                        'Changed!',
+                        response.data.total + ' ' + 'Status has been Changed.',
+                        'success'
+                    );
+                    // Refresh Tbl Data with current page
+                    this.getResults(this.currentPageNumber);
+
+                }).catch((data) => {
+                    this.$swal.fire("Failed!", data.message, "warning");
+                });
+            }
+        })
+    },
+
+    // Bulk Status Deactive
+    statusDeactiveAll(selected) {
+
+        this.$swal.fire({
+            title: 'Are you sure?',
+            text: 'Are you want to Deactive all?',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Active',
+        }).then((result) => {
+
+            // Send request to the server
+            if (result.value) {
+                axios.post(this.currentUrl + '/bulk-status-deactive', { data:selected }).then((response) => {
+                    this.selected = [];
+                    this.selectedAll = false;
+                    this.$swal.fire(
+                        'Changed!',
+                        response.data.total + ' ' + 'Status has been Changed.',
+                        'success'
+                    );
+                    // Refresh Tbl Data with current page
+                    this.getResults(this.currentPageNumber);
+
+                }).catch((data) => {
+                    this.$swal.fire("Failed!", data.message, "warning");
+                });
+            }
+        })
+    },
+
   },
 
   mounted() {
@@ -294,6 +394,14 @@ export default {
 </script>
 
 <style>
+
+  .btn_active{
+    background-color: #5cb85c !important;
+  }
+  
+  .btn_inactive{
+    background-color: red !important;
+  }
 
     /* vuetify pagination css */
 		.v-pagination__item {

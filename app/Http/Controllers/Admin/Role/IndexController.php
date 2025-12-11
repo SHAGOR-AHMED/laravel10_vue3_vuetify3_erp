@@ -95,4 +95,31 @@ class IndexController extends Controller
         return response()->json(['success' => $success, 'total' => $count], 200);
     }
 
+    //Bulk status active
+    public function statusActiveAll(Request $request){
+        $count = 0;
+        foreach($request->data as $id){
+            $role         =  Role::find($id);
+            $role->status = 1;
+            $role->save();
+            $count++;
+        }
+        $success = $count > 0 ? true : false;
+        return response()->json(['success' => $success, 'total' => $count], 200);
+    }
+
+    //Bulk status deactive
+    public function statusDeactiveAll(Request $request){
+        $count = 0;
+        foreach($request->data as $id){
+            $role         =  Role::find($id);
+            $role->status = 0;
+            $role->save();
+            $count++;
+        }
+        $success = $count > 0 ? true : false;
+        return response()->json(['success' => $success, 'total' => $count], 200);
+
+    }
+
 }

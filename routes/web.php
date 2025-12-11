@@ -41,11 +41,13 @@ Route::namespace('App\Http\Controllers')->group(function(){
 
          //Role 
         Route::namespace('Role')->prefix('role')->group(function(){
-            Route::get('/index',                'IndexController@index');
-            Route::post('/store',               'IndexController@store');
-            Route::put('/update',               'IndexController@update');
-            Route::delete('/destroy/{id}',      'IndexController@destroy');
-            Route::post('/delete-all',          'IndexController@deleteAll');
+            Route::get('/index',                 'IndexController@index');
+            Route::post('/store',                'IndexController@store');
+            Route::put('/update',                'IndexController@update');
+            Route::delete('/destroy/{id}',       'IndexController@destroy');
+            Route::post('/delete-all',           'IndexController@deleteAll');
+            Route::post('/bulk-status-active',   'IndexController@statusActiveAll');
+            Route::post('/bulk-status-deactive', 'IndexController@statusDeactiveAll');
         });
 
     });
